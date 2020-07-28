@@ -15,17 +15,20 @@ year = {2015}
 }
 ```
 
-# Installation
-This repository contains a modified version of Caffe and uses its python wrapper (pycaffe). <br />
-Please check the following instruction to compile Caffe:
-http://caffe.berkeleyvision.org/installation.html. <br />
-After installing the libraries required by Caffe, you should be able to compile the code succesfully as follows:
+# Install and RUN
+1. Use our bug free container: ```docker pull zhoubinxyz/caffe-cu10```
+2. Clone my version: ```git clone zmonoid/nips2015-action-conditional-video-prediction```
+3. Get the container terminal: ```cd nips2015-action-conditional-video-prediction; nvidia-docker run -it --volume "./":/workspace zhoubinxyz/caffe-cu10```
+4. Generate and prepare dataset:
+ 4.1 ```cd breakout; mkdir test train; python generate_images.py``` change ```stage=train``` in ```generate_images.py``` to generate different train dataset.
+ 4.2 ```python make_list.py``` to make image list. Similarly change to ```glob.glob('test/*/*.png')``` to make test image list.
+ 4.3 ```convert_imageset ./ img_list.txt images``` to convert to lmdb dataset.
+ 4.4 ```compute_image_mean images mean.binaryproto``` to compute image mean.
+5. Train the model: ```../train_cnn.sh 4 0```
 
-```
-cd caffe
-make
-make pycaffe
-```
+
+---
+
 
 # Data structure
 The data directories should be organized as follows:
